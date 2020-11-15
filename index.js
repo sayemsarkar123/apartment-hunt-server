@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config()
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4001;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -29,5 +29,6 @@ client.connect(err => {
     bookingsCollection.insertOne(req.body).then(result => res.send(result.insertedCount > 0));
   });
 });
+
 
 app.listen(PORT, () => console.log(`Our app is running on port ${PORT}`));
