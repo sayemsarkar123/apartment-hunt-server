@@ -15,11 +15,18 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const housesCollection = client.db("apartmentHunt").collection("houses");
   const servicesCollection = client.db("apartmentHunt").collection("services");
+  const bookingsCollection = client.db("apartmentHunt").collection("bookings");
   app.get('/getHouses', (req, res) => {
     housesCollection.find({}).toArray((error, documents) => res.send(documents));
   });
   app.get('/getServices', (req, res) => {
     servicesCollection.find({}).toArray((error, documents) => res.send(documents));
+  });
+  app.get('/getBookings', (req, res) => {
+    bookingsCollection.find({}).toArray((error, documents) => res.send(documents));
+  });
+  app.post('/addBooking', (req, res) => {
+    bookingsCollection.insertOne(req.body).then(result => res.send(result.insertedCount > 0));
   });
 });
 
