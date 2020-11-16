@@ -6,7 +6,6 @@ const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config()
 const app = express();
 const PORT = process.env.PORT || 4000;
-const ObjectId = require('mongodb').ObjectId;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
