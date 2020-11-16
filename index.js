@@ -48,6 +48,10 @@ client.connect(err => {
   app.get('/getBookings', (req, res) => {
     bookingsCollection.find({}).toArray((error, documents) => res.send(documents));
   });
+  app.get('/getUserBookings', (req, res) => {
+    const {email} = req.query;
+    bookingsCollection.find({email}).toArray((error, documents) => res.send(documents));
+  });
   app.post('/addBooking', (req, res) => {
     bookingsCollection.insertOne(req.body).then(result => res.send(result.insertedCount > 0));
   });
