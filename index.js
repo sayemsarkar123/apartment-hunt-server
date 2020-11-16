@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config()
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -18,6 +19,10 @@ client.connect(err => {
   const bookingsCollection = client.db("apartmentHunt").collection("bookings");
   app.get('/getHouses', (req, res) => {
     housesCollection.find({}).toArray((error, documents) => res.send(documents));
+  });
+  app.get('/getHomeDetails/:id', (req, res) => {
+    const { id } = req.params;
+    housesCollection.find({_id: ObjectId(id)}).toArray((error, documents) => res.send(documents[0]));
   });
   app.get('/getServices', (req, res) => {
     servicesCollection.find({}).toArray((error, documents) => res.send(documents));
