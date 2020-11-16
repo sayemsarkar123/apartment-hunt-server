@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config()
 const app = express();
-const PORT = process.env.PORT || 4001;
-
+const PORT = process.env.PORT || 4000;
+const ObjectId = require('mongodb').ObjectId;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +28,18 @@ client.connect(err => {
   app.post('/addBooking', (req, res) => {
     bookingsCollection.insertOne(req.body).then(result => res.send(result.insertedCount > 0));
   });
+  app.patch('/updateStatus', (req,res)=>{
+    bookingsCollection.updateOne(
+        {_id : ObjectId(req.body.id)},
+        {
+            $set: { status: req.body.newStatus},
+            $currentDate : { "lastModified": true }
+        }
+    )
+    .then(result =>{
+        res.send(result.modifiedCount > 0)
+    })
+  })
 });
 
 
