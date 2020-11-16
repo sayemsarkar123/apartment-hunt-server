@@ -32,8 +32,7 @@ client.connect(err => {
     bookingsCollection.updateOne(
         {_id : ObjectId(req.body.id)},
         {
-            $set: { status: req.body.newStatus},
-            $currentDate : { "lastModified": true }
+          $set: { status: req.body.newStatus},
         }
     )
     .then(result =>{
