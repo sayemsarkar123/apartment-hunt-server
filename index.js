@@ -20,26 +20,19 @@ client.connect(err => {
 
   app.post("/addHouse", (req, res) => {
     const file = req.files.file;
-    const title = req.body.title;
-    const location = req.body.location;
-    const price = req.body.price;
-    const bedroom = req.body.bedroom;
-    const bathroom = req.body.bathroom;
-    const newImg = file.data;
-    const encImg = newImg.toString("base64");
-
-    var image = {
+    const {title, location, price, bedroom, bathroom} = req.body;
+    const img = {
       contentType: file.mimetype,
       size: file.size,
-      img: Buffer.from(encImg, "base64"),
+      img: Buffer.from(file.data.toString("base64"), "base64"),
     };
     housesCollection
-      .insertOne({ title, location, price, bedroom, bathroom, image })
+      .insertOne({ title, location, price, bedroom, bathroom, img })
       .then((result) => {
         res.send(result.insertedCount > 0);
       });
   });
-  
+
   app.get('/getHouses', (req, res) => {
     housesCollection.find({}).toArray((error, documents) => res.send(documents));
   });
