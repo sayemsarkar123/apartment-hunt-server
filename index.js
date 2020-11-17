@@ -52,6 +52,11 @@ client.connect(err => {
             res.send(documents)
     })
   })
+ app.get('/checkAdmin', (req, res) => {
+   const {email} = req.query;
+   adminCollection.find({email})
+   .toArray((err, documents) => res.send(documents.length > 0))
+ })
 
 });
 
