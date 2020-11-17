@@ -19,7 +19,7 @@ client.connect(err => {
   const housesCollection = client.db("apartmentHunt").collection("houses");
   const servicesCollection = client.db("apartmentHunt").collection("services");
   const bookingsCollection = client.db("apartmentHunt").collection("bookings");
-
+  const adminCollection = client.db("apartmentHunt").collection("adminList");
   app.post("/addHouse", (req, res) => {
     const file = req.files.file;
     const {title, location, price, bedroom, bathroom} = req.body;
@@ -34,7 +34,6 @@ client.connect(err => {
         res.send(result.insertedCount > 0);
       });
   });
-
   app.get('/getHouses', (req, res) => {
     housesCollection.find({}).toArray((error, documents) => res.send(documents));
   });
@@ -66,6 +65,24 @@ client.connect(err => {
         res.send(result.modifiedCount > 0)
     })
   })
+  app.post('/addAdmin', (req, res) => {
+    adminCollection.insertOne(req.body)
+        .then(result => {
+            res.send(result.insertedCount > 0)
+    })
+  })
+  app.get('/getAdminEmails', (req, res) => {
+    adminCollection.find({})
+        .toArray((err, documents) => {
+            res.send(documents)
+    })
+  })
+ app.get('/checkAdmin', (req, res) => {
+   const {email} = req.query;
+   adminCollection.find({email})
+   .toArray((err, documents) => res.send(documents.length > 0))
+ })
+
 });
 
 
